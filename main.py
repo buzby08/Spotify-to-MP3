@@ -25,22 +25,17 @@ except ImportError:
 def main() -> None:
     ''' The main function of the program. '''
     
+    import spotipy.util as util
     from spotipy.oauth2 import SpotifyClientCredentials
-
+    from spotipy.oauth2 import SpotifyOAuth
+    
     client_id = os.environ['CLIENT_ID']
     client_secret = os.environ['CLIENT_SECRET']
+    scope = 'playlist-read-private'
+
+    token = util.prompt_for_user_token('yl5ucbxali83f64suipwp4lsp?si=ade7a354969b4bf1', scope, client_id=client_id, client_secret=client_secret, redirect_uri='https://example.com')
     
-    ts_uri = 'spotify:artist:06HL4z0CvFAxyc27GXpf02'
-    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id, client_secret))
-    
-    results = spotify.artist_albums(ts_uri, album_type='album')
-    albums = results['items']
-    while results['next']:
-        results = spotify.next(results)
-        albums.extend(results['items'])
-    
-    for album in albums:
-        print(album['name'])
+    sp = spotipy.Spotify(auth=token)
 
 if __name__ == '__main__':
     main()
