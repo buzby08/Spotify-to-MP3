@@ -26,11 +26,14 @@ def main() -> None:
     ''' The main function of the program. '''
     
     from spotipy.oauth2 import SpotifyClientCredentials
+
+    client_id = os.environ['CLIENT_ID']
+    client_secret = os.environ['CLIENT_SECRET']
     
-    birdy_uri = 'spotify:artist:2WX2uTcsvV5OnS0inACecP'
-    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
+    ts_uri = 'spotify:artist:06HL4z0CvFAxyc27GXpf02'
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id, client_secret))
     
-    results = spotify.artist_albums(birdy_uri, album_type='album')
+    results = spotify.artist_albums(ts_uri, album_type='album')
     albums = results['items']
     while results['next']:
         results = spotify.next(results)
